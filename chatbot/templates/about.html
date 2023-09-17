@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MyChatBot - Created by using OpenAi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">MyChatBot</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/about">About</a>
+              </li>
+              
+              <!-- <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown
+                </a> -->
+                <!-- <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul> -->
+              <!-- </li> -->
+              <!-- <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+              </li> -->
+            <!-- </ul> -->
+            <!-- <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form> -->
+          </div>
+        </div>
+      </nav>
+      <div class="Container">
+        <h1 class="text-center my-3">Bored?Lets Chat!</h1>
+
+        <div1>
+          <pre id = "prompt">
+Harry : How are you ?
+julie : Hey, am good
+          </pre>
+          <div class="form-floating">
+            <textarea id="typedPrompt" name="w3review" cols="0"></textarea>
+            <label for="floatingTextarea">Reply</label>
+          </div>
+          {% csrf_token %}
+          <button type="button" id="submit" class="btn btn-primary">Submit</button>
+        </div1>
+      </div>
+      <script>
+        let csrfmiddlewaretoken = document.querySelector("input[type=hidden]").value
+
+        let data = new FormData();
+        data.append('prompt', document.querySelector("#prompt").innerText);;
+        // data.append('fileName', file.name);
+        // add form input from hidden input elsewhere on the page
+        data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+        const fetchData = async() => {
+
+          let a = await fetch("/api", {
+            method: 'POST',
+            body: data,
+            credentials: 'same-origin'
+
+          })
+          let r = await a.json()
+          return r
+        }
+
+        submit.addEventListener("click", async () =>{
+          document.getElementById("prompt").innerText = document.getElementById("prompt").innerText + "\nHarry: " + 
+          typedPrompt.value + "\nJulie: "
+          response = await fetchData()
+          document.getElementById("prompt").innerText = response["choices"][0].text
+
+        })
+      </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  </body>
+</html>

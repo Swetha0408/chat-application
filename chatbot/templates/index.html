@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+        .message-container {
+            max-height: 70vh; /* Set a maximum height for the message container */
+            overflow-y: auto; /* Enable vertical scrolling when content exceeds the container height */
+          }
+        .input-container {
+            position: fixed;
+            bottom: 15px;
+            left: 20;
+            width: 100%;
+            text-align: center;
+            padding: 10px; /* Add padding to the input container */
+            display: flex;
+            align-items: center;
+            /* Add any other styles for your input container here */
+          }
+         /* Define a CSS class for the chatbot container */
+        .Container{
+            font-family:Helvetica;
+            font-weight: bold;
+            text-align: left;
+            background-color: #DAFFFB; /* Set the background color to your desired color */
+            width: 40%; /* Set the width of the chatbot container */
+            padding: 10px; /* Add some padding for spacing */
+            border-radius: 20px; 
+            margin: 0 auto;
+            margin-top: 50px; 
+            color: #176B87;
+            height: 80vh;
+            
+        }
+
+        /* Define a CSS class for the chat messages */
+        .container-fluid {
+            font-family: Verdana;
+            font-weight: bold;
+            background-color: #176B87; /* Set the background color for chat messages */
+            color: #fff; /* Set the text color for chat messages */
+            padding: 5px 10px; /* Add padding to individual messages */
+            margin-bottom: 5px; /* Add some spacing between messages */
+            border-radius: 5px; /* Add rounded corners to messages */
+            color:#DAFFFB;
+        }
+
+        nav .navbar-brand {
+            color: #DAFFFB !important; /* Replace with your desired font color */
+        }
+        .form-floating textarea{
+            border-radius: 20px;
+        }
+        #submit {
+        position: absolute;
+        padding-bottom: 25px;
+        height: 45px;
+        top: 20%; /* Adjust the top position as needed */
+        margin-right: 900px;
+        right: 45px;
+        background-color: #176B87;
+        flex-grow: 1;
+        }
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MyChatBot - Created by using OpenAi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">MyChatBot</a>
+        </div>
+    </nav>
+      <div class="Container">
+        <h1 class="text-center my-3">Bored? Lets Chat!</h1>
+        <div class="message-container">
+          <pre id = "prompt">
+Harry : How are you ?
+julie : Hey, am good
+          </pre>
+        </div>
+        <div class="input-container">
+          <div class="form-floating">
+            <textarea id="typedPrompt" name="w3review"  cols="55"></textarea>
+            <!-- <button type="button" id="submit" class="btn btn-primary">Send</button> -->
+          </div>
+          {% csrf_token %}
+          <button type="button" id="submit" class="btn btn-primary">Send</button>
+        </div1>
+      </div>
+      <script>
+        let csrfmiddlewaretoken = document.querySelector("input[type=hidden]").value
+        const fetchData = async(myPrompt) => {
+            let data = new FormData();
+            data.append('prompt', myPrompt);;
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+            let a = await fetch("/api", {
+              method: 'POST',
+              body: data,
+              credentials: 'same-origin'
+
+            })
+            let r = await a.json()
+            return r
+        }
+        submit.addEventListener("click", async () =>{
+          let myPrompt = document.getElementById("prompt").innerText + "\nHarry: " + typedPrompt.value + "\nJulie: "
+          document.getElementById("prompt").innerText = myPrompt
+          response = await fetchData(myPrompt)
+          document.getElementById("prompt").innerText += response["choices"][0].text
+          document.getElementById("typedPrompt").value = ""
+        })
+      </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  </body>
+</html>
